@@ -19,10 +19,10 @@ const answers = ref([
         <img src="@/assets/images/default_user.png" alt="user" class="sidebar__user-image">
       </div>
       <div class="user-info">
-        <div class="sidebar__little-box">کد کلاسی</div>
-        <div class="sidebar__big-box">۵۷۶</div>
         <div class="sidebar__little-box">نام و نام خانوادگی</div>
         <div class="sidebar__big-box">محمد رحمانی</div>
+        <div class="sidebar__little-box">کد کلاسی</div>
+        <div class="sidebar__big-box">۵۷۶</div>
         <div class="sidebar__little-box">کد دانشجویی</div>
         <div class="sidebar__big-box">۱۲۳۴۵۶۷۸۹۰</div>
       </div>
@@ -136,7 +136,7 @@ const answers = ref([
   }
 
   &__little-box {
-    font-size: .9rem;
+    font-size: .8rem;
     background-color: var(--color-primary);
     color: white;
     padding: .3rem .7rem .1rem;
@@ -150,7 +150,7 @@ const answers = ref([
     background-color: var(--color-secondary);
     width: 100%;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 }
 
