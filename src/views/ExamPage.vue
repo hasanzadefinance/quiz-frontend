@@ -56,7 +56,7 @@ const answers = ref([
           <h3 class="question__question">سوال ۱</h3>
           <span
               class="mt-4">چرا نقره به عنوان یک گزینه مناسب برای سرمایه گذاری در بحران های اقتصادی شناخته می شود؟</span>
-          <ul class="question__answers-list mt-4">
+          <ul class="question__answers-list mt-8">
             <li class="question__answer"
                 v-for="(answer, index) in answers">
               <span class="question__answer__number">{{ index }}</span>
@@ -253,7 +253,7 @@ const answers = ref([
   background-color: var(--box-background-color);
   border-radius: 1rem;
   padding: .5rem 1rem;
-  max-height: 33rem;
+  max-height: 39rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -310,9 +310,12 @@ const answers = ref([
     align-items: center;
     padding: .5rem .5rem .5rem 4rem;
     border-radius: .5rem;
-    margin-top: .5rem;
     background-color: var(--color-secondary);
     cursor: pointer;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
 
     &__number {
       width: 2.5rem;
