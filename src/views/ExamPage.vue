@@ -1,12 +1,265 @@
 <script setup>
-import {ref} from "vue"
+import {ref, reactive, computed, onMounted} from "vue"
 
-const answers = ref([
-  {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
-  {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
-  {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
-  {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'},
+const questions = reactive([
+  {
+    id: 1,
+    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 2,
+    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 3,
+    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 4,
+    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 5,
+    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 6,
+    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 7,
+    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 8,
+    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 9,
+    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 10,
+    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 11,
+    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
+  {
+    id: 12,
+    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    options: [
+      {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
+      {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
+      {id: 3, text: 'به دلیل نیاز کم به امنیت در نگهداری'},
+      {id: 4, text: 'به خاطر ارزش کمتر نسبت به طلا'}
+    ]
+  },
 ])
+
+const currentQuestionId = ref(1)
+const questionCounter = ref(1)
+const currentAnswerId = ref(null)
+const savedAnswers = reactive([])
+const indicator = ref()
+
+function goToNextQuestion() {
+  if (currentQuestionId.value >= questions.length) return
+
+  saveAnswer()
+  setAnswerOnIndicator()
+  currentAnswerId.value = null
+
+  currentQuestionId.value++
+  questionCounter.value++
+
+  setCurrentClassOnIndicatorBox()
+
+  findAnswer()
+  scrollToNextIndicator()
+}
+
+function goToPreviousQuestion() {
+  if (currentQuestionId.value <= 1) return
+
+  saveAnswer()
+  setAnswerOnIndicator()
+  currentAnswerId.value = null
+
+  currentQuestionId.value--
+  questionCounter.value--
+
+  setCurrentClassOnIndicatorBox()
+
+  findAnswer()
+  scrollToPreviousIndicator()
+}
+
+function saveAnswer() {
+  savedAnswers.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+}
+
+function findAnswer() {
+  currentAnswerId.value = savedAnswers.find((answer) => answer.questionId === currentQuestionId.value)?.answerId ?? null
+  popAnswerFromSavedAnswers()
+}
+
+function popAnswerFromSavedAnswers() {
+  const index = savedAnswers.findIndex((answer) => answer.questionId === currentQuestionId.value)
+  if (index > -1) {
+    savedAnswers.splice(index, 1)
+  }
+}
+
+function selectAnswer(answerId) {
+  currentAnswerId.value = answerId
+}
+
+function finishExam() {
+  // Check if user can finish
+  if (questionCounter.value !== questions.length) return
+
+  savedAnswers.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+  console.log(savedAnswers)
+}
+
+function setAnswerOnIndicator() {
+  const index = questionCounter.value - 1
+  const boxes = document.querySelectorAll('.indicator__box')
+  if (currentAnswerId.value) {
+    boxes[index].classList.remove('indicator__box--current')
+
+    boxes[index].classList.add('indicator__box--answered')
+    boxes[index].classList.remove('indicator__box--not-answered')
+  } else {
+    boxes[index].classList.remove('indicator__box--current')
+
+    boxes[index].classList.remove('indicator__box--answered')
+    boxes[index].classList.add('indicator__box--not-answered')
+  }
+}
+
+function setCurrentClassOnIndicatorBox() {
+  document.querySelectorAll('.indicator__box')[questionCounter.value - 1].classList.add('indicator__box--current')
+}
+
+function jumpToQuestion(index) {
+  // Check if the jump is not logical
+  const el = document.querySelectorAll('.indicator__box')[index]
+  if (!el.classList.contains('indicator__box--answered') && !el.classList.contains('indicator__box--not-answered')) return
+
+  saveAnswer()
+  setAnswerOnIndicator()
+  currentAnswerId.value = null
+
+  questionCounter.value = index + 1
+  setCurrentClassOnIndicatorBox()
+  currentQuestionId.value = questions[index].id
+  findAnswer()
+}
+
+function scrollToNextIndicator() {
+  const nextIndicator = Array.from(document.querySelectorAll('.indicator__box'))[questionCounter.value - 1]
+  const nextIndicatorRect = nextIndicator.getBoundingClientRect()
+  const indicatorRect = indicator.value.getBoundingClientRect()
+
+  if (nextIndicatorRect.bottom > indicatorRect.bottom) {
+    indicator.value.scrollTo({
+      top: indicator.value.scrollTop + (nextIndicatorRect.height + 30),
+      behavior: 'smooth'
+    })
+  }
+}
+
+function scrollToPreviousIndicator() {
+  const prevIndicator = Array.from(document.querySelectorAll('.indicator__box'))[questionCounter.value - 1]
+  const prevIndicatorRect = prevIndicator.getBoundingClientRect()
+  const indicatorRect = indicator.value.getBoundingClientRect()
+
+  if (prevIndicatorRect.top < indicatorRect.top) {
+    indicator.value.scrollTo({
+      top: indicator.value.scrollTop - (prevIndicatorRect.height + 30),
+      behavior: 'smooth'
+    })
+  }
+}
+
+
+const currentQuestion = computed(() =>
+    questions.find(q => q.id === currentQuestionId.value)
+)
+
+onMounted(async () => {
+  document.querySelector('.indicator__box').classList.add('indicator__box--current')
+})
+
 </script>
 
 <template>
@@ -52,24 +305,33 @@ const answers = ref([
       </header>
       <div class="questions">
         <div class="question">
-          <button class="next-button">⭢ سوال بعد</button>
-          <h3 class="question__question">سوال ۱</h3>
+          <div class="question__buttons">
+            <button class="next-button" v-if="questionCounter < questions.length" @click="goToNextQuestion"><- سوال
+              بعد
+            </button>
+            <button class="prev-button" v-if="questionCounter > 1" @click="goToPreviousQuestion"> سوال قبل -></button>
+          </div>
+          <h3 class="question__question">سوال {{ questionCounter }}</h3>
           <span
-              class="mt-4">چرا نقره به عنوان یک گزینه مناسب برای سرمایه گذاری در بحران های اقتصادی شناخته می شود؟</span>
+              class="mt-4">{{ currentQuestion.question }}</span>
           <ul class="question__answers-list mt-8">
             <li class="question__answer"
-                v-for="(answer, index) in answers">
-              <span class="question__answer__number">{{ index }}</span>
+                v-for="(answer, index) in currentQuestion.options" @click="selectAnswer(answer.id)"
+                :class="{'question__answer--selected': currentAnswerId === answer.id}"
+            >
+              <span class="question__answer__number">{{ index + 1 }}</span>
               <span class="question__answer__text">{{ answer.text }}</span>
             </li>
           </ul>
-          <button class="finish-button">
-            <img src="@/assets/images/padlock.png" alt="lock" class="finish-button__icon">
+          <button class="finish-button" :class="{'finish-button--open': questionCounter === questions.length}"
+                  @click="finishExam">
+            <img src="@/assets/images/padlock.png" alt="lock" class="finish-button__icon"
+                 v-if="questionCounter !== questions.length">
             <span class="finish-button__text">ثبت نهایی آزمون</span>
           </button>
         </div>
-        <div class="indicator">
-          <div class="indicator__box" v-for="i in 15">{{ i }}</div>
+        <div class="indicator" ref="indicator">
+          <div v-for="(q, i) in questions" class="indicator__box" @click="jumpToQuestion(i)">{{ i + 1 }}</div>
         </div>
       </div>
       <div class="footer">
@@ -81,7 +343,7 @@ const answers = ref([
           <div class="guide__box guide__box--active inline-block"></div>
           <span>سوال فعال</span>
         </div>
-        <div class="number-of-questions">تعداد کل سوالات : 15</div>
+        <div class="number-of-questions">تعداد کل سوالات : {{ questions.length }}</div>
       </div>
     </div>
   </div>
@@ -111,6 +373,10 @@ const answers = ref([
   background-size: cover;
   border: 3px solid var(--box-border-color);
   border-radius: 1.5rem;
+
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
 
   &__logo {
     width: 8rem;
@@ -159,6 +425,9 @@ const answers = ref([
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @media only screen and (max-width: 1200px) {
+    width: 100%;
+  }
 }
 
 .line {
@@ -183,6 +452,7 @@ const answers = ref([
   align-items: center;
   gap: 1.5rem;
   justify-content: center;
+  flex-wrap: wrap;
 
   &__item {
     display: flex;
@@ -198,9 +468,12 @@ const answers = ref([
 }
 
 .questions {
-  // flex-grow: 1;
   display: flex;
   gap: 1.5rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .footer {
@@ -234,11 +507,11 @@ const answers = ref([
     border-radius: .5rem;
 
     &--success {
-      background-color: #AEE9D5;
+      background-color: var(--color-success);
     }
 
     &--danger {
-      background-color: #F5C1C3;
+      background-color: var(--color-danger);
     }
 
     &--active {
@@ -248,11 +521,10 @@ const answers = ref([
 }
 
 .indicator {
-  width: 4rem;
   border: 3px solid var(--box-border-color);
   background-color: var(--box-background-color);
   border-radius: 1rem;
-  padding: .5rem 1rem;
+  padding: .5rem .5rem;
   max-height: 37rem;
   display: flex;
   flex-direction: column;
@@ -271,9 +543,26 @@ const answers = ref([
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    padding: 1.75rem;
     border-radius: .5rem;
     color: var(--color-primary);
+    cursor: pointer;
+    transition: all .2s ease;
+
+    &--not-answered {
+      background-color: var(--color-danger);
+      color: #75514F;
+    }
+
+    &--answered {
+      background-color: var(--color-success);
+      color: #2D584A;
+    }
+
+    &--current {
+      background-color: var(--color-primary);
+      color: white;
+    }
 
     &:not(:last-child) {
       margin-bottom: .75rem;
@@ -281,12 +570,15 @@ const answers = ref([
   }
 }
 
-.next-button {
-  align-self: flex-end;
+.next-button, .prev-button {
   padding: .5rem .75rem;
   background-color: var(--color-secondary);
   border-radius: .5rem;
   font-size: 1rem;
+}
+
+.prev-button {
+  background-color: var(--color-gray-1);
 }
 
 .question {
@@ -298,6 +590,12 @@ const answers = ref([
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+
+  &__buttons {
+    display: flex;
+    align-self: flex-end;
+    gap: 1rem;
+  }
 
   &__question {
     font-weight: bold;
@@ -312,6 +610,12 @@ const answers = ref([
     border-radius: .5rem;
     background-color: var(--color-secondary);
     cursor: pointer;
+    transition: all .2s ease-out;
+
+    &--selected {
+      background-color: var(--color-primary);
+      color: white;
+    }
 
     &:not(:last-child) {
       margin-bottom: 1rem;
@@ -343,10 +647,17 @@ const answers = ref([
   border-radius: 1rem;
   font-size: 1rem;
   align-items: center;
+  cursor: default;
+
+  &--open {
+    background-color: var(--color-success);
+    cursor: pointer;
+  }
 
   &__icon {
     margin-left: .5rem;
     width: 1.5rem;
   }
 }
+
 </style>
