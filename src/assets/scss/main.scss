@@ -1,0 +1,40 @@
+@import "variables";
+
+@font-face {
+  font-family: 'Vazir';
+  src: url(../fonts/Vazir-Medium.ttf);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Vazir', sans-serif;
+}
+
+button {
+  all: unset;
+  display: inline-block;
+  cursor: pointer;
+  background-color: white;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
