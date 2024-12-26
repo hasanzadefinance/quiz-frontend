@@ -117,7 +117,7 @@ const answers = ref([
   }
 
   &__title {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     color: var(--color-primary);
     margin-top: 2rem;
     font-weight: bold;
@@ -136,7 +136,7 @@ const answers = ref([
   }
 
   &__little-box {
-    font-size: .7rem;
+    font-size: .9rem;
     background-color: var(--color-primary);
     color: white;
     padding: .3rem .7rem .1rem;
@@ -146,11 +146,11 @@ const answers = ref([
 
   &__big-box {
     border-radius: .75rem;
-    padding: .4rem;
+    padding: .6rem;
     background-color: var(--color-secondary);
     width: 100%;
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -198,7 +198,7 @@ const answers = ref([
 }
 
 .questions {
-  flex-grow: 1;
+  // flex-grow: 1;
   display: flex;
   gap: 1.5rem;
 }
@@ -253,7 +253,7 @@ const answers = ref([
   background-color: var(--box-background-color);
   border-radius: 1rem;
   padding: .5rem 1rem;
-  max-height: 39rem;
+  max-height: 37rem;
   display: flex;
   flex-direction: column;
   align-items: center;
