@@ -190,6 +190,7 @@ function finishExam() {
   if (questionCounter.value !== questions.length) return
 
   savedAnswers.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+  // Here we want to finalize the exam
   console.log(savedAnswers)
 }
 
@@ -291,7 +292,7 @@ function handleTimer() {
     callback() {
       timer.value--
       if (timer.value === 0) {
-        // Close the exam if timer has ended
+        // Close the exam if timer has ended, for now just pausing the timer
         pause()
       }
     },
@@ -432,5 +433,5 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/scss/exam";
+@use "@/assets/scss/exam";
 </style>
