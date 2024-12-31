@@ -260,6 +260,7 @@
 
 .prev-button {
   background-color: var(--color-gray-1);
+
   & i {
     margin-left: 0;
     margin-right: .25rem;
@@ -339,10 +340,12 @@
   font-size: 1rem;
   align-items: center;
   cursor: default;
+  pointer-events: none;
 
   &--open {
     background-color: var(--color-success);
     cursor: pointer;
+    pointer-events: auto;
   }
 
   &__icon {
@@ -385,5 +388,27 @@
   gap: 1rem;
   @media only screen and (max-width: 650px) {
     display: flex;
+  }
+}
+
+.dialog {
+  &__controls {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: space-between;
+
+    &--submit {
+      background-color: var(--color-primary);
+      color: white;
+      padding: .5rem 1rem;
+      cursor: pointer;
+      border-radius: .5rem;
+    }
+
+    &--close {
+      background-color: #EEF2FE;
+      padding: 0 2rem;
+      border-radius: .5rem;
+    }
   }
 }

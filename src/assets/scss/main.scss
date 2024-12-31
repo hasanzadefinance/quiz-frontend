@@ -1,9 +1,5 @@
 @use "variables";
-
-@font-face {
-  font-family: 'Vazir';
-  src: url(../fonts/Vazir-Medium.ttf);
-}
+@use 'fonts';
 
 * {
   box-sizing: border-box;
@@ -26,7 +22,8 @@ html {
 body {
   width: 100%;
   min-height: 100vh;
-  font-family: 'Vazir', sans-serif;
+  font-family: IRANSansXFaNum, sans-serif;
+  font-weight: normal;
 }
 
 button {

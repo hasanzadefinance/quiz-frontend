@@ -1,6 +1,10 @@
 <script setup>
 import {ref, reactive, computed, onMounted} from "vue"
 import {useInterval} from '@vueuse/core'
+import Toast from 'primevue/toast'
+import {useToast} from 'primevue/usetoast'
+
+const toast = useToast()
 
 const questions = reactive([
   {
@@ -132,6 +136,7 @@ const savedAnswers = reactive([])
 const indicator = ref()
 const mobileIndicator = ref()
 const timer = ref(1800)
+const confirmDialog = ref(false)
 
 function goToNextQuestion() {
   if (currentQuestionId.value >= questions.length) return
@@ -186,10 +191,8 @@ function selectAnswer(answerId) {
 }
 
 function finishExam() {
-  // Check if user can finish
-  if (questionCounter.value !== questions.length) return
-
   savedAnswers.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+
   // Here we want to finalize the exam
   console.log(savedAnswers)
 }
@@ -300,6 +303,18 @@ function handleTimer() {
   })
 }
 
+function openConfirmDialog() {
+  if (!currentAnswerId.value) {
+    toast.add({
+      summary: 'لطفا سوال پایانی را نیز پاسخ دهید.',
+      severity: 'warn',
+      life: 3000,
+    })
+    return
+  }
+  confirmDialog.value = true
+}
+
 const timerLabel = computed(() => {
   const minute = Math.trunc(timer.value / 60)
   const second = timer.value % 60
@@ -309,6 +324,11 @@ const timerLabel = computed(() => {
 const currentQuestion = computed(() =>
     questions.find(q => q.id === currentQuestionId.value)
 )
+
+const shouldFinishButtonOpen = computed(() => {
+  const areAllQuestionsAnswered = !(savedAnswers.some(item => item.answerId === null))
+  return savedAnswers.length + 1 === questions.length && areAllQuestionsAnswered
+})
 
 onMounted(async () => {
   document.querySelector('.indicator__box').classList.add('indicator__box--current')
@@ -320,6 +340,20 @@ onMounted(async () => {
 
 <template>
   <div class="page">
+    <Dialog v-model:visible="confirmDialog" modal
+            :style="{ width: '90%', fontSize: '1.35rem', maxWidth: '35rem', padding: '1rem ' }"
+            :dismissable-mask="true">
+      <template #header>
+        <span>آیا از پایان آزمون مطمئن هستید؟</span>
+      </template>
+      <template #default>
+        <div class="dialog__controls">
+          <button class="dialog__controls--submit" @click="finishExam">اتمام آزمون</button>
+          <button class="dialog__controls--close" @click="confirmDialog = false">بستن</button>
+        </div>
+      </template>
+    </Dialog>
+    <Toast/>
     <div class="sidebar">
       <img src="@/assets/images/logo.png" alt="logo" class="sidebar__logo">
       <div class="line mt-6"></div>
@@ -397,10 +431,10 @@ onMounted(async () => {
               <span class="question__answer__text">{{ answer.text }}</span>
             </li>
           </ul>
-          <button class="finish-button" :class="{'finish-button--open': questionCounter === questions.length}"
-                  @click="finishExam">
+          <button class="finish-button" :class="{'finish-button--open': shouldFinishButtonOpen}"
+                  @click="openConfirmDialog">
             <img src="@/assets/images/padlock.png" alt="lock" class="finish-button__icon"
-                 v-if="questionCounter !== questions.length">
+                 v-if="!shouldFinishButtonOpen">
             <span class="finish-button__text">ثبت نهایی آزمون</span>
           </button>
         </div>
