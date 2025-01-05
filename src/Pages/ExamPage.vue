@@ -136,7 +136,7 @@ const savedAnswers = reactive([])
 const indicator = ref()
 const mobileIndicator = ref()
 const timer = ref(1800)
-const confirmDialog = ref(false)
+const confirmDialog = ref(true)
 
 function goToNextQuestion() {
   if (currentQuestionId.value >= questions.length) return
@@ -340,12 +340,9 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <Dialog v-model:visible="confirmDialog" modal
-            :style="{ width: '90%', fontSize: '1.35rem', maxWidth: '35rem', padding: '1rem ' }"
+    <Dialog v-model:visible="confirmDialog" modal header="آیا از پایان آزمون مطمئن هستید؟"
+            :style="{ width: '90%', fontSize: '1.35rem', maxWidth: '35rem', padding: '1rem' }"
             :dismissable-mask="true">
-      <template #header>
-        <span>آیا از پایان آزمون مطمئن هستید؟</span>
-      </template>
       <template #default>
         <div class="dialog__controls">
           <button class="dialog__controls--submit" @click="finishExam">اتمام آزمون</button>
