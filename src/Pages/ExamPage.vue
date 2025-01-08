@@ -1,8 +1,9 @@
 <script setup>
-import {ref, reactive, computed, onMounted} from "vue"
+import {ref, reactive, computed, onMounted, onBeforeUnmount} from "vue"
 import {useInterval} from '@vueuse/core'
 import Toast from 'primevue/toast'
 import {useToast} from 'primevue/usetoast'
+import BaseDialog from "@/components/BaseDialog.vue"
 
 const toast = useToast()
 
@@ -130,17 +131,14 @@ let questions = reactive([
 ])
 
 function shuffleArray(originalArray) {
-  const arrayCopy = [...originalArray]; // Create a copy of the original array
-
+  const arrayCopy = [...originalArray]
   for (let i = arrayCopy.length - 1; i > 0; i--) {
     // Pick a random index from 0 to i
     const randomIndex = Math.floor(Math.random() * (i + 1));
-
     // Swap elements at i and randomIndex
-    [arrayCopy[i], arrayCopy[randomIndex]] = [arrayCopy[randomIndex], arrayCopy[i]];
+    [arrayCopy[i], arrayCopy[randomIndex]] = [arrayCopy[randomIndex], arrayCopy[i]]
   }
-
-  return arrayCopy; // Return the shuffled array
+  return arrayCopy
 }
 
 // Shuffle all the questions
@@ -151,21 +149,20 @@ questions.forEach((q) => {
   q.options = shuffleArray(q.options)
 })
 
-
-
 const currentQuestionId = ref(questions[0].id)
 const questionCounter = ref(1)
 const currentAnswerId = ref(null)
-const savedAnswers = reactive([])
+let savedAnswers = reactive([])
 const indicator = ref()
 const mobileIndicator = ref()
 const timer = ref(1800)
-const confirmDialog = ref(true)
+const confirmDialog = ref(false)
 
 function goToNextQuestion() {
   if (questionCounter.value + 1 > questions.length) return
 
   saveAnswer()
+  setAnswersListOnCookie()
   setAnswerOnIndicator()
   currentAnswerId.value = null
 
@@ -182,6 +179,7 @@ function goToPreviousQuestion() {
   if (questionCounter.value === 1) return
 
   saveAnswer()
+  setAnswersListOnCookie()
   setAnswerOnIndicator()
   currentAnswerId.value = null
 
@@ -245,6 +243,27 @@ function setCurrentClassOnIndicatorBox() {
   mobileIndicator.value.querySelectorAll('.indicator__box')[questionCounter.value - 1].classList.add('indicator__box--current')
 }
 
+function setAnswersListOnCookie() {
+  const date = new Date()
+  date.setTime(date.getTime() + timer.value * 1000 * 50 * 1000)
+  // save only answered questions in saved answers:
+  console.log(savedAnswers);
+  
+  const notNullAnswers = savedAnswers.filter((a) => a.answerId)
+  document.cookie = `answers=${JSON.stringify(notNullAnswers)}; expires=${date.toUTCString()}`
+}
+
+function getAnswersListFromCookie() {
+  const cookies = document.cookie.split('; ')
+  for (const cookie of cookies) {
+    const [cookieKey, cookieValue] = cookie.split('=')
+    if (cookieKey === 'answers') {
+      return JSON.parse(cookieValue)
+    }
+  }
+  return []
+}
+
 function jumpToQuestion(index, container) {
   let clickedEl
   if (container === 'mobile') {
@@ -255,6 +274,7 @@ function jumpToQuestion(index, container) {
   if (!clickedEl.classList.contains('indicator__box--answered') && !clickedEl.classList.contains('indicator__box--not-answered')) return
 
   saveAnswer()
+  setAnswersListOnCookie()
   setAnswerOnIndicator()
   currentAnswerId.value = null
 
@@ -358,22 +378,21 @@ onMounted(async () => {
   document.querySelector('.indicator__box').classList.add('indicator__box--current')
   mobileIndicator.value.querySelector('.indicator__box').classList.add('indicator__box--current')
   handleTimer()
+  savedAnswers = getAnswersListFromCookie()
 })
 
 </script>
 
 <template>
   <div class="page">
-    <Dialog v-model:visible="confirmDialog" modal header="آیا از پایان آزمون مطمئن هستید؟"
-            :style="{ width: '90%', fontSize: '1.35rem', maxWidth: '35rem', padding: '1rem' }"
-            :dismissable-mask="true">
-      <template #default>
-        <div class="dialog__controls">
-          <button class="dialog__controls--submit" @click="finishExam">اتمام آزمون</button>
-          <button class="dialog__controls--close" @click="confirmDialog = false">بستن</button>
-        </div>
-      </template>
-    </Dialog>
+     <base-dialog v-model="confirmDialog" :class="['dialog__padding--1']">
+        <p>آیا از پایان آزمون خود مطمئن هستید؟</p>
+      <div class="dialog__controls">
+        <button class="dialog__controls--close" @click="confirmDialog = false">خیر</button>
+        <!-- Shah Mohammadi should set a function for submit here -->
+        <button class="dialog__controls--submit" @click="">پایان آزمون</button>
+      </div>
+    </base-dialog>
     <Toast/>
     <div class="sidebar">
       <img src="@/assets/images/logo.png" alt="logo" class="sidebar__logo">
