@@ -41,8 +41,8 @@
   top: 50%;
   left: 25%;
   transform: translate(-50%, -50%);
-  width: 50rem;
-  height: 31rem;
+  width: 52rem;
+  height: 40rem;
   object-fit: fill;
 }
 
@@ -99,6 +99,7 @@
     width: 50%;
     align-items: center;
     justify-content: center;
+    color: #171264;
     @media only screen and (max-width: 950px) {
       font-size: 1rem;
     }
