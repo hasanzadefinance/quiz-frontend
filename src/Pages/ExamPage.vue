@@ -6,10 +6,10 @@ import {useToast} from 'primevue/usetoast'
 
 const toast = useToast()
 
-const questions = reactive([
+let questions = reactive([
   {
     id: 1,
-    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    question: "سوال اول است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -19,7 +19,7 @@ const questions = reactive([
   },
   {
     id: 2,
-    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    question: "سوال دوم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -29,7 +29,7 @@ const questions = reactive([
   },
   {
     id: 3,
-    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    question: "سوال سوم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -39,7 +39,7 @@ const questions = reactive([
   },
   {
     id: 4,
-    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    question: "سوال چهارم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -49,7 +49,7 @@ const questions = reactive([
   },
   {
     id: 5,
-    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    question: "سوال پنجم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -59,7 +59,7 @@ const questions = reactive([
   },
   {
     id: 6,
-    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    question: "سوال ششم",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -69,7 +69,7 @@ const questions = reactive([
   },
   {
     id: 7,
-    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    question: "سوال هفتم",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -79,7 +79,7 @@ const questions = reactive([
   },
   {
     id: 8,
-    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    question: "سوال هشتم",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -89,7 +89,7 @@ const questions = reactive([
   },
   {
     id: 9,
-    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    question: "سوال نهم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -99,7 +99,7 @@ const questions = reactive([
   },
   {
     id: 10,
-    question: "به نظر شما چرا قیمت مرغ همزمان با قیمت گوشت و ماشین پراید بالا می رود؟",
+    question: "سوال دهم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -109,7 +109,7 @@ const questions = reactive([
   },
   {
     id: 11,
-    question: "این چه هندیه که درست کردی واقعا آیا این مطلب درست است که شما در مورد آن صحبت می کنید؟",
+    question: "سوال یازدهم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -119,7 +119,7 @@ const questions = reactive([
   },
   {
     id: 12,
-    question: "آقای شاه محمدی این چه کار سخیفی است که انجام می دهید؟",
+    question: "سوال دوازدهم است",
     options: [
       {id: 1, text: 'به دلیل تقاضای پایین در بازار'},
       {id: 2, text: 'به عنوان دارایی کمیاب و ملموس'},
@@ -129,8 +129,31 @@ const questions = reactive([
   },
 ])
 
+function shuffleArray(originalArray) {
+  const arrayCopy = [...originalArray]; // Create a copy of the original array
 
-const currentQuestionId = ref(1)
+  for (let i = arrayCopy.length - 1; i > 0; i--) {
+    // Pick a random index from 0 to i
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+
+    // Swap elements at i and randomIndex
+    [arrayCopy[i], arrayCopy[randomIndex]] = [arrayCopy[randomIndex], arrayCopy[i]];
+  }
+
+  return arrayCopy; // Return the shuffled array
+}
+
+// Shuffle all the questions
+questions = shuffleArray(questions)
+
+// Shuffle answers
+questions.forEach((q) => {
+  q.options = shuffleArray(q.options)
+})
+
+
+
+const currentQuestionId = ref(questions[0].id)
 const questionCounter = ref(1)
 const currentAnswerId = ref(null)
 const savedAnswers = reactive([])
@@ -140,14 +163,14 @@ const timer = ref(1800)
 const confirmDialog = ref(true)
 
 function goToNextQuestion() {
-  if (currentQuestionId.value >= questions.length) return
+  if (questionCounter.value + 1 > questions.length) return
 
   saveAnswer()
   setAnswerOnIndicator()
   currentAnswerId.value = null
 
-  currentQuestionId.value++
   questionCounter.value++
+  currentQuestionId.value = questions[questionCounter.value - 1].id
 
   setCurrentClassOnIndicatorBox()
 
@@ -156,14 +179,14 @@ function goToNextQuestion() {
 }
 
 function goToPreviousQuestion() {
-  if (currentQuestionId.value <= 1) return
+  if (questionCounter.value === 1) return
 
   saveAnswer()
   setAnswerOnIndicator()
   currentAnswerId.value = null
 
-  currentQuestionId.value--
   questionCounter.value--
+  currentQuestionId.value = questions[questionCounter.value - 1].id
 
   setCurrentClassOnIndicatorBox()
 
