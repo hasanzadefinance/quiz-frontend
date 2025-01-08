@@ -41,8 +41,8 @@
   top: 50%;
   left: 25%;
   transform: translate(-50%, -50%);
-  width: 30rem;
-  height: 5rem;
+  width: 50rem;
+  height: 31rem;
   object-fit: fill;
 }
 
