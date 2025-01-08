@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <div class="page">
     <img src="@/assets/images/design_image_index_page.png" alt="" class="design-image">
@@ -18,11 +14,11 @@
         </ol>
       </div>
       <div class="quiz__controls">
-        <button class="begin-exam-button">شروع آزمون</button>
         <div class="quiz__time">
           <img src="@/assets/images/clock.png" alt="clock icon" class="quiz__time__icon">
           <span class="quiz__time__text">مدت آزمون: 10 دقیقه</span>
         </div>
+        <button class="begin-exam-button">شروع آزمون</button>
       </div>
     </div>
   </div>
