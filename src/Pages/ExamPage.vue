@@ -129,6 +129,7 @@ const questions = reactive([
   },
 ])
 
+
 const currentQuestionId = ref(1)
 const questionCounter = ref(1)
 const currentAnswerId = ref(null)

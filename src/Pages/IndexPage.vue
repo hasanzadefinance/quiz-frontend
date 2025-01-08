@@ -4,6 +4,7 @@
 
 <template>
   <div class="page">
+    <img src="@/assets/images/design_image_index_page.png" alt="" class="design-image">
     <div class="quiz">
       <div class="quiz__title">
         <img src="@/assets/images/logo_colored.png" alt="hasanzadeh logo" class="logo">
@@ -33,6 +34,16 @@
   position: relative;
   background: url(@/assets/images/index_page_background.jpg);
   background-size: cover;
+}
+
+.design-image {
+  position: fixed;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  width: 30rem;
+  height: 5rem;
+  object-fit: fill;
 }
 
 .quiz {
@@ -70,12 +81,11 @@
     justify-content: center;
 
     &__text {
-      font-size: 2rem;
+      font-size: 1.75rem;
       color: #171264;
       font-weight: 700;
       @media only screen and (max-width: 950px) {
-        font-size: 1.8rem;
-
+        font-size: 1.65rem;
       }
     }
   }
@@ -90,7 +100,7 @@
     align-items: center;
     justify-content: center;
     @media only screen and (max-width: 950px) {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     &__icon {
       width: 2rem;
@@ -108,13 +118,13 @@
     gap: 1.5rem;
 
     &__title {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       color: #171264;
       font-weight: 700;
     }
 
     &__rule {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: #5E605F;
       position: relative;
@@ -145,7 +155,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
   }
 }
@@ -158,7 +168,7 @@
   background-color: #9DF2DF;
   color: #171264;
   @media only screen and (max-width: 950px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 }
 
