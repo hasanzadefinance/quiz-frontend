@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive, computed, onMounted, onBeforeUnmount} from "vue"
+import {ref, reactive, computed, onMounted, nextTick} from "vue"
 import {useInterval} from '@vueuse/core'
 import Toast from 'primevue/toast'
 import {useToast} from 'primevue/usetoast'
@@ -130,12 +130,12 @@ let questions = reactive([
   },
 ])
 
+
+
 function shuffleArray(originalArray) {
   const arrayCopy = [...originalArray]
   for (let i = arrayCopy.length - 1; i > 0; i--) {
-    // Pick a random index from 0 to i
     const randomIndex = Math.floor(Math.random() * (i + 1));
-    // Swap elements at i and randomIndex
     [arrayCopy[i], arrayCopy[randomIndex]] = [arrayCopy[randomIndex], arrayCopy[i]]
   }
   return arrayCopy
@@ -152,11 +152,14 @@ questions.forEach((q) => {
 const currentQuestionId = ref(questions[0].id)
 const questionCounter = ref(1)
 const currentAnswerId = ref(null)
-let savedAnswers = reactive([])
+let savedAnswers = ref([])
 const indicator = ref()
 const mobileIndicator = ref()
 const timer = ref(1800)
 const confirmDialog = ref(false)
+
+let boxes
+let mobileBoxes
 
 function goToNextQuestion() {
   if (questionCounter.value + 1 > questions.length) return
@@ -193,19 +196,19 @@ function goToPreviousQuestion() {
 }
 
 function saveAnswer() {
-  savedAnswers.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+  // Check if answer exists
+  const answerIndex = savedAnswers.value.findIndex((a) => a.questionId === currentQuestionId.value)
+  if (answerIndex >= 0) {
+    savedAnswers.value[answerIndex].answerId = currentAnswerId.value
+  } else {
+    savedAnswers.value.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+  }
 }
 
 function findAnswer() {
-  currentAnswerId.value = savedAnswers.find((answer) => answer.questionId === currentQuestionId.value)?.answerId ?? null
-  popAnswerFromSavedAnswers()
-}
-
-function popAnswerFromSavedAnswers() {
-  const index = savedAnswers.findIndex((answer) => answer.questionId === currentQuestionId.value)
-  if (index > -1) {
-    savedAnswers.splice(index, 1)
-  }
+  currentAnswerId.value =
+      savedAnswers.value.find((answer) => answer.questionId === currentQuestionId.value)?.answerId ?? null
+  // popAnswerFromSavedAnswers()
 }
 
 function selectAnswer(answerId) {
@@ -213,16 +216,20 @@ function selectAnswer(answerId) {
 }
 
 function finishExam() {
-  savedAnswers.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
+  confirmDialog.value = false
+  document.cookie = "answers=; path=/;"
+  savedAnswers.value.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
 
-  // Here we want to finalize the exam
-  console.log(savedAnswers)
+  // Convert savedAnswers to object form
+  const data = {}
+  for (const answer of savedAnswers.value) {
+    data[answer.questionId] = answer.answerId
+  }
+  console.log(data)
 }
 
 function setAnswerOnIndicator() {
   const index = questionCounter.value - 1
-  const boxes = indicator.value.querySelectorAll('.indicator__box')
-  const mobileBoxes = mobileIndicator.value.querySelectorAll('.indicator__box')
   boxes[index].classList.remove('indicator__box--current')
   mobileBoxes[index].classList.remove('indicator__box--current')
   if (currentAnswerId.value) {
@@ -245,11 +252,9 @@ function setCurrentClassOnIndicatorBox() {
 
 function setAnswersListOnCookie() {
   const date = new Date()
-  date.setTime(date.getTime() + timer.value * 1000 * 50 * 1000)
+  date.setTime(date.getTime() + timer.value * 1000)
   // save only answered questions in saved answers:
-  console.log(savedAnswers);
-  
-  const notNullAnswers = savedAnswers.filter((a) => a.answerId)
+  const notNullAnswers = savedAnswers.value.filter((a) => a.answerId)
   document.cookie = `answers=${JSON.stringify(notNullAnswers)}; expires=${date.toUTCString()}`
 }
 
@@ -257,7 +262,7 @@ function getAnswersListFromCookie() {
   const cookies = document.cookie.split('; ')
   for (const cookie of cookies) {
     const [cookieKey, cookieValue] = cookie.split('=')
-    if (cookieKey === 'answers') {
+    if (cookieKey === 'answers' && cookieValue) {
       return JSON.parse(cookieValue)
     }
   }
@@ -341,6 +346,7 @@ function handleTimer() {
       if (timer.value === 0) {
         // Close the exam if timer has ended, for now just pausing the timer
         pause()
+        finishExam()
       }
     },
     controls: true
@@ -370,27 +376,55 @@ const currentQuestion = computed(() =>
 )
 
 const shouldFinishButtonOpen = computed(() => {
-  const areAllQuestionsAnswered = !(savedAnswers.some(item => item.answerId === null))
-  return savedAnswers.length + 1 === questions.length && areAllQuestionsAnswered
+  const inLastQuestionAndAnswered =
+      questionCounter.value === questions.length &&
+      savedAnswers.value.every((a) => a.answerId) &&
+      currentAnswerId.value &&
+      savedAnswers.value.length + 1 === questions.length
+  const allQuestionsAnswered =
+      savedAnswers.value.every((a) => a.answerId) &&
+      savedAnswers.value.length === questions.length
+  return inLastQuestionAndAnswered || allQuestionsAnswered
 })
 
+function initializeBoxes() {
+  // Set success color on indicators which their question answered
+  savedAnswers.value.forEach((answer) => {
+    const i = questions.findIndex(q => q.id === answer.questionId)
+    boxes[i].classList.add('indicator__box--answered')
+    mobileBoxes[i].classList.add('indicator__box--answered')
+  })
+  // Set current class on first box
+  boxes[0].classList.add('indicator__box--current')
+  mobileBoxes[0].classList.add('indicator__box--current')
+}
+
 onMounted(async () => {
-  document.querySelector('.indicator__box').classList.add('indicator__box--current')
-  mobileIndicator.value.querySelector('.indicator__box').classList.add('indicator__box--current')
   handleTimer()
-  savedAnswers = getAnswersListFromCookie()
+  savedAnswers.value = getAnswersListFromCookie()
+  // Set savedAnswers on indicator boxes:
+  await nextTick()
+  // Initializing boxes values
+  boxes = indicator.value.querySelectorAll('.indicator__box')
+  mobileBoxes = mobileIndicator.value.querySelectorAll('.indicator__box')
+  initializeBoxes()
+  // Check if the first question has answer
+  const firstQuestionAnswerId = savedAnswers.value.find((a) => a.questionId === currentQuestionId.value)?.answerId
+  if (firstQuestionAnswerId) {
+    currentAnswerId.value = firstQuestionAnswerId
+  }
 })
 
 </script>
 
 <template>
   <div class="page">
-     <base-dialog v-model="confirmDialog" :class="['dialog__padding--1']">
-        <p>آیا از پایان آزمون خود مطمئن هستید؟</p>
+    <base-dialog v-model="confirmDialog" :class="['dialog__padding--1']">
+      <p>آیا از پایان آزمون خود مطمئن هستید؟</p>
       <div class="dialog__controls">
         <button class="dialog__controls--close" @click="confirmDialog = false">خیر</button>
         <!-- Shah Mohammadi should set a function for submit here -->
-        <button class="dialog__controls--submit" @click="">پایان آزمون</button>
+        <button class="dialog__controls--submit" @click="finishExam">پایان آزمون</button>
       </div>
     </base-dialog>
     <Toast/>
