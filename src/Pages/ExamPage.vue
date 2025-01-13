@@ -145,9 +145,10 @@ function shuffleArray(originalArray) {
 questions = shuffleArray(questions)
 
 // Shuffle answers
-questions.forEach((q) => {
-  q.options = shuffleArray(q.options)
-})
+questions.forEach( ( q ) =>
+{
+    q.options = shuffleArray( JSON.parse( JSON.stringify( q.options ) ) )
+} )
 
 const currentQuestionId = ref(questions[0].id)
 const questionCounter = ref(1)
