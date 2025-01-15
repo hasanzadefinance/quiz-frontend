@@ -310,6 +310,14 @@
       color: white;
     }
 
+    &--correct {
+      background-color: var(--color-success)!important;
+    }
+
+    &--wrong {
+      background-color: var(--color-danger);
+    }
+
     &:not(:last-child) {
       margin-bottom: 1rem;
     }
