@@ -218,7 +218,7 @@ function selectAnswer(answerId) {
 
 function finishExam() {
   confirmDialog.value = false
-  document.cookie = "answers=; path=/;"
+  document.cookie = "answers=null; path=/;"
   savedAnswers.value.push({questionId: currentQuestionId.value, answerId: currentAnswerId.value})
 
   // Convert savedAnswers to object form
@@ -402,7 +402,7 @@ function initializeBoxes() {
 
 onMounted(async () => {
   handleTimer()
-  savedAnswers.value = getAnswersListFromCookie()
+  savedAnswers.value = getAnswersListFromCookie() ?? []
   // Set savedAnswers on indicator boxes:
   await nextTick()
   // Initializing boxes values
